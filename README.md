@@ -1,4 +1,4 @@
-# Gross Calculator - Production Monorepo
+# Gross Calculator
 
 A full-stack application for calculating gross margins from employee timecards, project budgets, and employee costs.
 
