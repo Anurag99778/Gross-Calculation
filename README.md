@@ -12,9 +12,8 @@ A full-stack application for calculating gross margins from employee timecards, 
 ## Quick Start
 
 ### Prerequisites
-- Docker & Docker Compose
 - Python 3.11+
-- Node.js 18+
+
 
 ### Development Setup
 ```bash
