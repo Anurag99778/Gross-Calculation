@@ -1,0 +1,39 @@
+# Basic Query Examples for RAG Training
+# These are placeholder examples - replace with actual question-SQL pairs
+
+examples:
+  - question: "What is the average gross margin for projects with more than 100 hours?"
+    sql: "SELECT AVG(gross_margin_percentage) FROM gross_margin_view WHERE total_hours > 100"
+    explanation: "This query calculates the average gross margin percentage for projects that have more than 100 total hours worked."
+    difficulty: "basic"
+    category: "aggregation"
+    
+  - question: "Show me projects with margins above 30%"
+    sql: "SELECT project_name, gross_margin_percentage FROM gross_margin_view WHERE gross_margin_percentage > 30 ORDER BY gross_margin_percentage DESC"
+    explanation: "This query finds all projects with gross margin percentage greater than 30% and orders them by margin percentage in descending order."
+    difficulty: "basic"
+    category: "filtering"
+    
+  - question: "Which projects have the highest total hours?"
+    sql: "SELECT project_name, total_hours FROM gross_margin_view ORDER BY total_hours DESC"
+    explanation: "This query lists all projects ordered by total hours worked, showing the projects with the most hours first."
+    difficulty: "basic"
+    category: "sorting"
+    
+  - question: "What is the total budget across all projects?"
+    sql: "SELECT SUM(budget) as total_budget FROM gross_margin_view"
+    explanation: "This query calculates the sum of all project budgets (SOW values) to get the total budget across all projects."
+    difficulty: "basic"
+    category: "aggregation"
+    
+  - question: "List projects ordered by margin percentage"
+    sql: "SELECT project_name, gross_margin_percentage FROM gross_margin_view ORDER BY gross_margin_percentage DESC"
+    explanation: "This query lists all projects ordered by gross margin percentage, showing the most profitable projects first."
+    difficulty: "basic"
+    category: "sorting"
+    
+  - question: "How many projects have negative margins?"
+    sql: "SELECT COUNT(*) as negative_margin_count FROM gross_margin_view WHERE gross_margin_percentage < 0"
+    explanation: "This query counts the number of projects that have negative gross margins (loss-making projects)."
+    difficulty: "basic"
+    category: "counting" 

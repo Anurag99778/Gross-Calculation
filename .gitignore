@@ -1,0 +1,106 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Frontend build
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+
+# Backend
+backend/uploads/
+backend/logs/
+backend/*.log
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Oracle
+*.ora
+*.dmp
+*.log
+
+# Excel/CSV files (data files)
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# Docker
+.dockerignore
+
+# Testing
+.coverage
+.pytest_cache/
+.nyc_output/
+
+# Pre-commit
+.pre-commit-config.yaml.bak
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo 

@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # Oracle Database (optional - can use external)
+  oracle:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: gross-calculator-oracle
+    environment:
+      ORACLE_PWD: oracle123
+      ORACLE_CHARACTERSET: AL32UTF8
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./database:/opt/oracle/scripts/setup
+    healthcheck:
+      test: ["CMD", "sqlplus", "-L", "system/oracle123@//localhost:1521/XE", "AS", "SYSDBA", "@/opt/oracle/scripts/setup/health_check.sql"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    profiles:
+      - full-stack
+      - database
+
+  # Backend FastAPI
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: ../docker/backend.Dockerfile
+    container_name: gross-calculator-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ORACLE_HOST=${ORACLE_HOST:-oracle}
+      - ORACLE_PORT=${ORACLE_PORT:-1521}
+      - ORACLE_SERVICE=${ORACLE_SERVICE:-XE}
+      - ORACLE_USER=${ORACLE_USER:-system}
+      - ORACLE_PASSWORD=${ORACLE_PASSWORD:-oracle123}
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-key}
+      - DEBUG=${DEBUG:-true}
+    volumes:
+      - ../../backend:/app
+      - uploads_data:/app/uploads
+    depends_on:
+      oracle:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Frontend React
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    container_name: gross-calculator-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Vanna AI (optional)
+  vanna:
+    image: vanna-ai/vanna:latest
+    container_name: gross-calculator-vanna
+    ports:
+      - "8080:8080"
+    environment:
+      - VANNA_DB_CONNECTION_STRING=${VANNA_DB_CONNECTION_STRING}
+      - VANNA_OPENAI_API_KEY=${VANNA_OPENAI_API_KEY}
+    volumes:
+      - vanna_data:/app/data
+    profiles:
+      - full-stack
+      - ai
+
+  # Nginx reverse proxy (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: gross-calculator-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    profiles:
+      - full-stack
+      - proxy
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: gross-calculator-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    profiles:
+      - full-stack
+      - cache
+
+volumes:
+  oracle_data:
+  uploads_data:
+  vanna_data:
+  redis_data:
+
+networks:
+  default:
+    name: gross-calculator-network 

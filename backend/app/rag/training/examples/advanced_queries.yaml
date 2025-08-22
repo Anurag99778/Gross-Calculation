@@ -1,0 +1,39 @@
+# Advanced Query Examples for RAG Training
+# These are placeholder examples - replace with actual question-SQL pairs
+
+examples:
+  - question: "What is the average margin for projects with budgets between 25000 and 75000?"
+    sql: "SELECT AVG(gross_margin_percentage) as avg_margin FROM gross_margin_view WHERE budget BETWEEN 25000 AND 75000"
+    explanation: "This query calculates the average gross margin percentage for projects with budgets in the specified range."
+    difficulty: "intermediate"
+    category: "conditional_aggregation"
+    
+  - question: "Show me the top 5 most profitable projects by margin percentage"
+    sql: "SELECT project_name, gross_margin_percentage FROM gross_margin_view WHERE gross_margin_percentage > 0 ORDER BY gross_margin_percentage DESC FETCH FIRST 5 ROWS ONLY"
+    explanation: "This query finds the top 5 most profitable projects by gross margin percentage, excluding projects with negative margins."
+    difficulty: "intermediate"
+    category: "ranking"
+    
+  - question: "What is the total hours worked on projects with margins above 40%?"
+    sql: "SELECT SUM(total_hours) as total_hours_high_margin FROM gross_margin_view WHERE gross_margin_percentage > 40"
+    explanation: "This query calculates the total hours worked on projects that have gross margins above 40%."
+    difficulty: "intermediate"
+    category: "conditional_aggregation"
+    
+  - question: "List projects with their budget utilization (hours per dollar)"
+    sql: "SELECT project_name, total_hours, budget, ROUND(total_hours / budget, 4) as hours_per_dollar FROM gross_margin_view WHERE budget > 0 ORDER BY hours_per_dollar DESC"
+    explanation: "This query calculates budget utilization by dividing total hours by budget, showing how many hours are worked per dollar of budget."
+    difficulty: "intermediate"
+    category: "calculated_fields"
+    
+  - question: "What percentage of projects have margins above the average?"
+    sql: "SELECT ROUND((COUNT(CASE WHEN gross_margin_percentage > (SELECT AVG(gross_margin_percentage) FROM gross_margin_view) THEN 1 END) * 100.0 / COUNT(*)), 2) as percentage_above_avg FROM gross_margin_view"
+    explanation: "This query calculates what percentage of projects have margins above the overall average margin."
+    difficulty: "advanced"
+    category: "subqueries"
+    
+  - question: "Show me projects grouped by margin ranges (0-20%, 21-40%, 41-60%, 60%+)"
+    sql: "SELECT CASE WHEN gross_margin_percentage BETWEEN 0 AND 20 THEN '0-20%' WHEN gross_margin_percentage BETWEEN 21 AND 40 THEN '21-40%' WHEN gross_margin_percentage BETWEEN 41 AND 60 THEN '41-60%' ELSE '60%+' END as margin_range, COUNT(*) as project_count FROM gross_margin_view GROUP BY CASE WHEN gross_margin_percentage BETWEEN 0 AND 20 THEN '0-20%' WHEN gross_margin_percentage BETWEEN 21 AND 40 THEN '21-40%' WHEN gross_margin_percentage BETWEEN 41 AND 60 THEN '41-60%' ELSE '60%+' END ORDER BY margin_range"
+    explanation: "This query groups projects into margin ranges and counts how many projects fall into each range."
+    difficulty: "advanced"
+    category: "grouping" 

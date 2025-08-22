@@ -1,0 +1,45 @@
+# Error Handling Examples for RAG Training
+# These examples show how to handle common error scenarios
+
+examples:
+  - question: "What is the average CTC for employees?"
+    sql: "SELECT 'ERROR: CTC queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because CTC (Cost to Company) data is sensitive and should never be exposed externally."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access"
+    
+  - question: "Show me employee salaries"
+    sql: "SELECT 'ERROR: Salary queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because salary information is sensitive and should never be exposed externally."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access"
+    
+  - question: "What is the cost per hour for each employee?"
+    sql: "SELECT 'ERROR: Cost queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because it would expose sensitive cost information that should remain internal."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access"
+    
+  - question: "List all projects with their total cost"
+    sql: "SELECT 'ERROR: Cost queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because it would expose sensitive cost information that should remain internal."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access"
+    
+  - question: "What is the average hourly rate for employees?"
+    sql: "SELECT 'ERROR: Rate queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because hourly rate information is sensitive and should never be exposed externally."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access"
+    
+  - question: "Show me the compensation structure for employees"
+    sql: "SELECT 'ERROR: Compensation queries not allowed' as message FROM dual"
+    explanation: "This query is blocked because compensation information is sensitive and should never be exposed externally."
+    difficulty: "basic"
+    category: "security_blocked"
+    error_type: "sensitive_data_access" 

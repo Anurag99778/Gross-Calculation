@@ -1,0 +1,96 @@
+# Vanna RAG Configuration
+# This file configures the self-hosted Vanna RAG system for natural language to SQL conversion
+
+# Embedding Model Configuration
+embedding_model:
+  name: "all-MiniLM-L6-v2"  # Local embedding model name
+  path: "./rag/models/embeddings"  # Path to local model files
+  type: "sentence_transformers"  # Model type for local inference
+  device: "cpu"  # Use "cuda" for GPU acceleration if available
+
+# Embedding Store Configuration
+embedding_store:
+  path: "./rag/embeddings"  # Local path for storing embeddings
+  type: "local"  # Local storage (no external APIs)
+  format: "faiss"  # Embedding index format
+  dimension: 384  # Embedding vector dimension
+
+# Chunking Configuration
+chunking:
+  chunk_size: 512  # Maximum tokens per chunk
+  chunk_overlap: 50  # Overlap between chunks
+  separator: "\n\n"  # Text separator for chunking
+
+# Retrieval Configuration
+retrieval:
+  top_k: 5  # Number of top chunks to retrieve
+  similarity_threshold: 0.7  # Minimum similarity score
+  max_context_length: 2000  # Maximum context length for generation
+
+# Generation Configuration
+generation:
+  max_tokens: 1000  # Maximum tokens in generated SQL
+  temperature: 0.1  # Low temperature for consistent SQL generation
+  model_name: "local_sql_generator"  # Local SQL generation model
+  model_path: "./rag/models/sql_generator"  # Path to SQL generation model
+
+# Training Configuration
+training:
+  batch_size: 32  # Training batch size
+  learning_rate: 1e-5  # Learning rate for fine-tuning
+  epochs: 10  # Number of training epochs
+  validation_split: 0.2  # Validation data split
+
+# Security Configuration
+security:
+  redact_sensitive_data: true  # Enable sensitive data redaction
+  sensitive_fields:  # Fields to redact in outputs
+    - "CTC"
+    - "CTCPHR"
+    - "CTC_ANNUAL"
+    - "SALARY"
+    - "COMPENSATION"
+    - "COST_TO_COMPANY"
+    - "HOURLY_RATE"
+    - "WAGE"
+  blocked_keywords:  # Keywords that trigger query blocking
+    - "ctc"
+    - "salary"
+    - "compensation"
+    - "cost to company"
+    - "hourly rate"
+    - "wage"
+
+# Database Configuration
+database:
+  connection_string: "oracle+://username:password@host:port/service_name"
+  schema_name: "GROSS_CALCULATOR"  # Database schema name
+  view_name: "GROSS_MARGIN_VIEW"  # Primary view for margin data
+
+# Logging Configuration
+logging:
+  level: "INFO"  # Logging level
+  file: "./logs/vanna.log"  # Log file path
+  max_size: "10MB"  # Maximum log file size
+  backup_count: 5  # Number of log backups
+
+# Performance Configuration
+performance:
+  cache_enabled: true  # Enable response caching
+  cache_ttl: 900  # Cache TTL in seconds (15 minutes)
+  max_concurrent_queries: 10  # Maximum concurrent queries
+  query_timeout: 30  # Query timeout in seconds
+
+# Monitoring Configuration
+monitoring:
+  metrics_enabled: true  # Enable performance metrics
+  health_check_interval: 60  # Health check interval in seconds
+  performance_tracking: true  # Track query performance
+  error_reporting: true  # Report errors for analysis
+
+# Development Configuration
+development:
+  debug_mode: false  # Enable debug mode
+  verbose_logging: false  # Enable verbose logging
+  mock_responses: false  # Use mock responses for testing
+  training_mode: false 
